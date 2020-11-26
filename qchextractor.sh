@@ -26,14 +26,13 @@ fi
 output_dir="$2/html"
 mkdir -p ${output_dir} || { echo "Unable to create output dir $2"; exit 1; }
 
-numfiles=$(sqlite3 "$1" "SELECT Count(*) FROM FileNameTable;")
-echo "Files inside .qch: ${numfiles}"
+# Remove 1st zero record for actual files count in .qch file
+files_count=$(( $(sqlite3 "$1" "SELECT Count(*) FROM FileNameTable;") - 1))
+echo -e "\nFiles inside '$(basename ${1})': ${files_count}"
 
-maxrow=$(( ${numfiles} - 1 ))
-echo -n -e "Extracting files:"
-for row in $(seq 1 ${maxrow})
+for row in $(seq 1 ${files_count})
 do
-    echo -n -e "\rExtracting files: ${row}/${maxrow}"
+    echo -n -e "\rExtracting files: ${row}/${files_count}"
     file_id=$(sqlite3 "$1" "SELECT FileId FROM FileNameTable LIMIT 1 OFFSET ${row};")
     file_name=$(sqlite3 "$1" "SELECT Name FROM FileNameTable WHERE FileId==${file_id};")
     dir_name=$(dirname "${file_name}")
