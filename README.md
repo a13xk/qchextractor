@@ -29,3 +29,17 @@ If the output directory does not exist, it will be created along with a subdirec
 named 'html' where the files contained in the qch file will be extracted.
 
 All credits for zpipe belong to the original author (Mark Adler) http://www.zlib.net/zpipe.c
+
+# Aurora/Sailfish SDK Example
+
+Example of batch extracting of Aurora/Sailfish SDK documentation files.
+
+```bash
+qchextractor="$(pwd)/qchextractor.sh"; \
+documentation_dir="${HOME}/AuroraOS/documentation"; \
+for qch_file in ${documentation_dir}/*.qch; do \
+    out_dir="${documentation_dir}/html/$(basename ${qch_file%.qch})"; \
+    mkdir -p "${out_dir}"; \
+    $qchextractor "${qch_file}" "${out_dir}"; \
+done
+```
