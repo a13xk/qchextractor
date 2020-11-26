@@ -27,7 +27,7 @@ output_dir="$2/html"
 mkdir -p ${output_dir} || { echo "Unable to create output dir $2"; exit 1; }
 
 numfiles=$(sqlite3 "$1" "SELECT Count(*) FROM FileNameTable;")
-echo "File number: ${numfiles}"
+echo "Files inside .qch: ${numfiles}"
 
 maxrow=$(( ${numfiles} - 1 ))
 echo -n -e "Extracting files:"
